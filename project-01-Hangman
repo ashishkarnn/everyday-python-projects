@@ -1,0 +1,138 @@
+import random
+
+# Word list
+word_list = ["apple", "banana", "cherry", "orange", "grape"]
+
+# Hangman stages (lives)
+stages = [
+    """
+      +---+
+      |   |
+      O   |
+     /|\\  |
+     / \\  |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+     /|\\  |
+     /    |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+     /|\\  |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+     /|   |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+      |   |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+          |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+          |
+          |
+          |
+          |
+    =========
+    """
+]
+
+# Hangman logo
+logo = """
+ _                                             
+| |                                            
+| |__   __ _ _ __   __ _ _ __ ___   __ _ _ __  
+| '_ \\ / _` | '_ \\ / _` | '_ ` _ \\ / _` | '_ \\ 
+| | | | (_| | | | | (_| | | | | | | (_| | | | |
+|_| |_|\\__,_|_| |_|\\__, |_| |_| |_|\\__,_|_| |_|
+                    __/ |                      
+                   |___/                       
+"""
+
+# Game start
+print(logo)
+
+# Randomly choose a word
+chosen_word = random.choice(word_list)
+word_length = len(chosen_word)
+
+# Create blanks
+display = ["_" for _ in range(word_length)]
+
+# Set initial lives
+lives = 6
+
+# List to track guessed letters
+guessed_letters = []
+
+# Game loop
+game_over = False
+while not game_over:
+    guess = input("Guess a letter: ").lower()
+
+    # Check if letter already guessed
+    if guess in guessed_letters:
+        print(f"You've already guessed '{guess}'. Try another letter.")
+    else:
+        guessed_letters.append(guess)
+
+        # Check if guessed letter is in the word
+        if guess in chosen_word:
+            for position in range(word_length):
+                letter = chosen_word[position]
+                if letter == guess:
+                    display[position] = letter
+            print("Good job!")
+        else:
+            lives -= 1
+            print(f"Wrong! You lose a life. Lives left: {lives}")
+            print(stages[6 - lives])
+            print(f"The letter '{guess}' is not in the word.")
+
+        # Show current progress
+        print(" ".join(display))
+
+        # Check if user has guessed all letters
+        if "_" not in display:
+            print("Congratulations! You guessed the word!")
+            game_over = True
+
+        # Check if user ran out of lives
+        if lives == 0:
+            print("You ran out of lives. Game Over!")
+            print(f"The word was '{chosen_word}'.")
+            game_over = True
+

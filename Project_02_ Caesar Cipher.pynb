@@ -1,0 +1,40 @@
+# Caesar Cipher
+
+# Define the alphabet
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+def caesar_cipher(text, shift, direction):
+    result = ""
+    
+    # Make sure shift stays within 0-25
+    shift = shift % 26
+    
+    for char in text:
+        if char in alphabet:
+            index = alphabet.index(char)
+            if direction == "encode":
+                new_index = (index + shift) % 26
+            elif direction == "decode":
+                new_index = (index - shift) % 26
+            result += alphabet[new_index]
+        else:
+            # Keep non-alphabet characters like spaces and punctuation
+            result += char
+    return result
+
+# Game loop
+should_continue = True
+
+while should_continue:
+    direction = input("Type 'encode' to encrypt, 'decode' to decrypt:\n").lower()
+    text = input("Enter your message:\n").lower()
+    shift = int(input("Enter shift number:\n"))
+
+    result_text = caesar_cipher(text, shift, direction)
+    print(f"Here's the {direction}d result: {result_text}")
+
+    # Ask if user wants to continue
+    restart = input("Type 'yes' to go again, or 'no' to quit:\n").lower()
+    if restart != "yes":
+        should_continue = False
+        print("Goodbye!")
